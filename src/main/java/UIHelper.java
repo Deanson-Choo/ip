@@ -13,7 +13,7 @@ public class UIHelper {
         System.out.println("ERROR: " + errorMessage);
     }
 
-    public static String getSeperator() {
+    public static String getSeparator() {
         return SEPARATOR;
     }
 }

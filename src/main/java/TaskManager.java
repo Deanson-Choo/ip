@@ -65,14 +65,14 @@ public class TaskManager {
     }
 
     public void listTasks() {
-        System.out.println(UIHelper.getSeperator());
+        System.out.println(UIHelper.getSeparator());
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
             Task task = tasks[i];
             System.out.print(i+1 + ". ");
             System.out.println(task);
         }
-        System.out.println(UIHelper.getSeperator());
+        System.out.println(UIHelper.getSeparator());
     }
 
 
