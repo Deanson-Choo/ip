@@ -1,6 +1,3 @@
-import java.util.Scanner;
-
-
 public class Jeff {
     private TaskManager taskManager = new TaskManager();
     private Reader reader = new Reader(taskManager);

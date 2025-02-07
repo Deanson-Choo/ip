@@ -14,16 +14,14 @@ public class TaskManager {
             tasks[taskCount] = new ToDo(description);
             System.out.println(tasks[taskCount]);
             taskCount++;
-        }
-        else if (taskDetails.startsWith("deadline")) {
+        } else if (taskDetails.startsWith("deadline")) {
             String[] taskParts = parts[1].split(" /by ", 2);
             String description = taskParts[0];
             String deadline = taskParts[1];
             tasks[taskCount] = new Deadline(description, deadline);
             System.out.println(tasks[taskCount]);
             taskCount++;
-        }
-        else if (taskDetails.startsWith("event")){
+        } else if (taskDetails.startsWith("event")){
             String[] fromSplit = parts[1].split(" /from ", 2);
             String[] toSplit = fromSplit[1].split(" /to ", 2);
 
@@ -34,22 +32,21 @@ public class TaskManager {
             tasks[taskCount] = new Event(description, from, to);
             System.out.println(tasks[taskCount]);
             taskCount++;
-        }
-        else {
+        } else {
             UIHelper.printError("Unknown command");
         }
     }
 
     public void updateItemStatus(String[] words) {
         String instruction = words[0];
-        if (words.length < 2) { //Error 1
+        if (words.length < 2) { //Error 1: No Task Number
             UIHelper.printWithSeparator("Please input a task number!");
             return;
         }
         int task_index = Integer.parseInt(words[1]) - 1;
 
-        //Error 2
-        if (task_index < 0 || task_index >= taskCount) {
+
+        if (task_index < 0 || task_index >= taskCount) { //Error 2: Invalid Task Number
             UIHelper.printWithSeparator("Please input a valid task number!");
             return;
         }

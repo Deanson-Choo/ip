@@ -1,6 +1,6 @@
 public class Task {
     protected String name = null;
-    boolean done;
+    protected boolean done;
 
 
     public Task(String name) {
