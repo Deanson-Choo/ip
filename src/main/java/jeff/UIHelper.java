@@ -1,3 +1,5 @@
+package jeff;
+
 public class UIHelper {
     private static final String SEPARATOR = "____________________________";
 
