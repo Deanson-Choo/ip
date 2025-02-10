@@ -9,20 +9,52 @@ import java.util.Scanner;
             this.taskManager = taskManager;
         }
 
+        private boolean isExitCommand(String line) {
+            return line.equalsIgnoreCase("bye");
+        }
+
+        private boolean isListCommand(String line) {
+            return line.equalsIgnoreCase("list");
+        }
+
+        private boolean isMarkOrUnmarkCommand(String line) {
+            return line.toLowerCase().startsWith("mark") || line.toLowerCase().startsWith("unmark");
+        }
+
+        private boolean isTaskCommand(String line) {
+            return line.toLowerCase().startsWith("todo") ||
+                    line.toLowerCase().startsWith("deadline") ||
+                    line.toLowerCase().startsWith("event");
+        }
+
+
         public void startScanning() {
+
             while (true) {
-                String line = scanner.nextLine();
-               if ((line.equalsIgnoreCase("bye"))) { //Case 1: Exit Program
-                    break;
-                }
-                else if (line.equalsIgnoreCase("list")) { //Case 2: List all items
-                    taskManager.listTasks();
-                }
-                else if (line.toLowerCase().startsWith("mark") || line.toLowerCase().startsWith("unmark")) { //Case 3: Marking items
-                    taskManager.updateItemStatus(line.split(" "));
-                }
-                else {
-                    taskManager.addNewItem(line); //Case 4: add items
+                try {
+                    String line = scanner.nextLine().trim();
+
+                    if (line.isEmpty()) {
+                        UIHelper.printError("No command entered! Please type a valid command.");
+                        continue;
+                    }
+
+                    if (isExitCommand(line)) {
+                        break;
+                    } else if (isListCommand(line)) {
+                        taskManager.listTasks();
+                    } else if (isMarkOrUnmarkCommand(line)) {
+                        taskManager.updateItemStatus(line.split(" "));
+                    } else if (isTaskCommand(line)) {
+                        taskManager.addNewItem(line);
+                    } else {
+                        UIHelper.printError("Unknown command! Please enter a valid command");
+                    }
+
+                } catch (JeffException e) {
+                    UIHelper.printError(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Unexpected error: " + e.getMessage());
                 }
             }
         }

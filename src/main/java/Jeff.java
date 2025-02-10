@@ -10,7 +10,7 @@ public class Jeff {
         UIHelper.printWithSeparator("Bye. Hope I see you again soon!");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Jeff jeff = new Jeff();
         jeff.intro();
         jeff.reader.startScanning();

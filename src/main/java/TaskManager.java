@@ -1,53 +1,40 @@
-public class TaskManager {
+public class TaskManager{
     private final Task[] tasks = new Task[100];
     private int taskCount = 0;
 
 
-    public void addNewItem(String taskDetails) {
+    public void addNewItem(String taskDetails) throws JeffException {
         String[] parts = taskDetails.split(" ", 2);
+        //part[0] is the task type, //parts[1] is the details
         if (parts.length < 2) {
-            UIHelper.printError("You did not enter task description!");
-            return;
+            throw new JeffException("You did not enter a task description");
         }
+
         if (taskDetails.startsWith("todo")) {
-            String description = parts[1];
-            tasks[taskCount] = new ToDo(description);
-            System.out.println(tasks[taskCount]);
-            taskCount++;
+            handleToDo(parts[1]);
         } else if (taskDetails.startsWith("deadline")) {
-            String[] taskParts = parts[1].split(" /by ", 2);
-            String description = taskParts[0];
-            String deadline = taskParts[1];
-            tasks[taskCount] = new Deadline(description, deadline);
-            System.out.println(tasks[taskCount]);
-            taskCount++;
-        } else if (taskDetails.startsWith("event")){
-            String[] fromSplit = parts[1].split(" /from ", 2);
-            String[] toSplit = fromSplit[1].split(" /to ", 2);
-
-            String description = fromSplit[0];
-            String from = toSplit[0];
-            String to = toSplit[1];
-
-            tasks[taskCount] = new Event(description, from, to);
-            System.out.println(tasks[taskCount]);
-            taskCount++;
+            handleDeadline(parts[1]);
         } else {
-            UIHelper.printError("Unknown command");
+            handleEvent(parts[1]);
         }
     }
+
 
     public void updateItemStatus(String[] words) {
         String instruction = words[0];
         if (words.length < 2) { //Error 1: No Task Number
-            UIHelper.printWithSeparator("Please input a task number!");
+            UIHelper.printError("Please input a task number!");
             return;
         }
+
         int task_index = Integer.parseInt(words[1]) - 1;
 
-
-        if (task_index < 0 || task_index >= taskCount) { //Error 2: Invalid Task Number
-            UIHelper.printWithSeparator("Please input a valid task number!");
+        if (taskCount == 0) { //Error 2: Empty List
+            UIHelper.printError("You have to add a task first!");
+            return;
+        }
+        if (task_index < 0 || task_index >= taskCount) { //Error 3: Invalid Task Number
+            UIHelper.printError("Please input a valid task number!");
             return;
         }
 
@@ -61,7 +48,12 @@ public class TaskManager {
         UIHelper.printWithSeparator(status_message + System.lineSeparator() + currTask);
     }
 
+
     public void listTasks() {
+        if (taskCount == 0) {
+            UIHelper.printWithSeparator("No tasks found!");
+            return;
+        }
         System.out.println(UIHelper.getSeparator());
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
@@ -73,5 +65,42 @@ public class TaskManager {
     }
 
 
+    private void handleToDo(String description) {
+        tasks[taskCount] = new ToDo(description);
+        System.out.println(tasks[taskCount]);
+        taskCount++;
+    }
+
+
+    private void handleDeadline (String details) throws JeffException{
+        String[] taskParts = details.split(" /by ", 2);
+        if (taskParts.length < 2) {
+            throw new JeffException("Please include task description, followed by '/by ' and the timing desired!");
+        }
+        String description = taskParts[0];
+        String deadline = taskParts[1];
+        tasks[taskCount] = new Deadline(description, deadline);
+        System.out.println(tasks[taskCount]);
+        taskCount++;
+    }
+
+
+    private void handleEvent(String details) throws JeffException {
+        String[] fromSplit = details.split(" /from ", 2);
+        if (fromSplit.length < 2) {
+            throw new JeffException("Event task must include task description followed by '/from' followed by a start time.");
+        }
+        String[] toSplit = fromSplit[1].split(" /to ", 2);
+        if (toSplit.length < 2) {
+            throw new JeffException("Event task must include '/to' followed by an end time.");
+        }
+        String description = fromSplit[0];
+        String from = toSplit[0];
+        String to = toSplit[1];
+
+        tasks[taskCount] = new Event(description, from, to);
+        System.out.println(tasks[taskCount]);
+        taskCount++;
+    }
 
 }
