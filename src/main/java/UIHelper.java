@@ -10,7 +10,7 @@ public class UIHelper {
     }
 
     public static void printError(String errorMessage) {
-        System.out.println("ERROR: " + errorMessage);
+        printWithSeparator("ERROR: " + errorMessage);
     }
 
     public static String getSeparator() {
