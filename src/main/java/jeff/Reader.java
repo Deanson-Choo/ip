@@ -12,21 +12,21 @@ import java.util.Scanner;
         }
 
         private boolean isExitCommand(String line) {
-            return line.equalsIgnoreCase("bye");
+            return line.equals(Commands.BYE.name());
         }
 
         private boolean isListCommand(String line) {
-            return line.equalsIgnoreCase("list");
+            return line.equals(Commands.LIST.name());
         }
 
         private boolean isMarkOrUnmarkCommand(String line) {
-            return line.toLowerCase().startsWith("mark") || line.toLowerCase().startsWith("unmark");
+            return line.startsWith(Commands.MARK.name()) || line.startsWith(Commands.UNMARK.name());
         }
 
         private boolean isTaskCommand(String line) {
-            return line.toLowerCase().startsWith("todo") ||
-                    line.toLowerCase().startsWith("deadline") ||
-                    line.toLowerCase().startsWith("event");
+            return line.startsWith(Commands.TODO.name()) ||
+                    line.startsWith(Commands.DEADLINE.name()) ||
+                    line.startsWith(Commands.EVENT.name());
         }
 
 
@@ -34,7 +34,7 @@ import java.util.Scanner;
 
             while (true) {
                 try {
-                    String line = scanner.nextLine().trim();
+                    String line = scanner.nextLine().trim().toUpperCase();
 
                     if (line.isEmpty()) {
                         UIHelper.printError("No command entered! Please type a valid command.");
