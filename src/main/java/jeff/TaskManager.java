@@ -1,10 +1,18 @@
 package jeff;
 import java.util.*;
 
-public class TaskManager{
-    private final ArrayList<Task> tasks= new ArrayList<>();
-    private int taskCount = 0;
+import java.util.ArrayList;
 
+public class TaskManager{
+    private final ArrayList<Task> tasks = new ArrayList<>();
+    private int taskCount;
+    protected final FileManager fileManager;
+
+    TaskManager() {
+        fileManager = new FileManager();
+        tasks.addAll(fileManager.loadFileContents());
+        taskCount = tasks.size();
+    }
 
     public void addNewItem(String taskDetails) throws JeffException {
         String[] parts = taskDetails.split(" ", 2);
@@ -129,6 +137,10 @@ public class TaskManager{
         tasks.add(new Event(description, from, to));
         System.out.println(tasks.get(taskCount));
         taskCount++;
+    }
+
+    protected void saveContents() {
+        fileManager.writeToFile(tasks);
     }
 
 }
