@@ -29,6 +29,10 @@ import java.util.Scanner;
                     line.startsWith(Commands.EVENT.name());
         }
 
+        private boolean isDeleteCommand(String line) {
+            return line.startsWith(Commands.DELETE.name());
+        }
+
 
         public void startScanning() {
 
@@ -49,7 +53,10 @@ import java.util.Scanner;
                         taskManager.updateItemStatus(line.split(" "));
                     } else if (isTaskCommand(line)) {
                         taskManager.addNewItem(line);
-                    } else {
+                    } else if (isDeleteCommand(line)) {
+                        taskManager.deleteItem(line.split(" "));
+                    }
+                    else {
                         UIHelper.printError("Unknown command! Please enter a valid command");
                     }
 
