@@ -9,6 +9,7 @@ public class Jeff {
     }
 
     public void outro() {
+        taskManager.saveContents();
         UIHelper.printWithSeparator("Bye. Hope I see you again soon!");
     }
 

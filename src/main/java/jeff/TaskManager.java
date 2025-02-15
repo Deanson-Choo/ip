@@ -1,9 +1,17 @@
 package jeff;
 
-public class TaskManager{
-    private final Task[] tasks = new Task[100];
-    private int taskCount = 0;
+import java.util.ArrayList;
 
+public class TaskManager{
+    private final ArrayList<Task> tasks = new ArrayList<>();
+    private int taskCount;
+    protected final FileManager fileManager;
+
+    public TaskManager() {
+        fileManager = new FileManager();
+        tasks.addAll(fileManager.loadFileContents()); // Load tasks at startup
+        taskCount = tasks.size();
+    }
 
     public void addNewItem(String taskDetails) throws JeffException {
         String[] parts = taskDetails.split(" ", 2);
@@ -12,12 +20,14 @@ public class TaskManager{
             throw new JeffException("You did not enter a task description");
         }
 
-        if (taskDetails.startsWith("todo")) {
+        if (taskDetails.startsWith("TODO")) {
             handleToDo(parts[1]);
-        } else if (taskDetails.startsWith("deadline")) {
+        } else if (taskDetails.startsWith("DEADLINE")) {
             handleDeadline(parts[1]);
-        } else {
+        } else if (taskDetails.startsWith("EVENT")) {
             handleEvent(parts[1]);
+        } else {
+            throw new JeffException("Error when adding new item");
         }
     }
 
@@ -40,7 +50,7 @@ public class TaskManager{
             return;
         }
 
-        Task currTask = tasks[task_index];
+        Task currTask = tasks.get(task_index);
         boolean isMark = instruction.equalsIgnoreCase("mark");
         currTask.setStatus(isMark); //if mark - set to true, else unmark - set to false
 
@@ -59,7 +69,7 @@ public class TaskManager{
         System.out.println(UIHelper.getSeparator());
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
-            Task task = tasks[i];
+            Task task = tasks.get(i);
             System.out.print(i+1 + ". ");
             System.out.println(task);
         }
@@ -68,31 +78,31 @@ public class TaskManager{
 
 
     private void handleToDo(String description) {
-        tasks[taskCount] = new ToDo(description);
-        System.out.println(tasks[taskCount]);
+        tasks.add(new ToDo(description));
+        System.out.println(tasks.get(taskCount));
         taskCount++;
     }
 
 
     private void handleDeadline (String details) throws JeffException{
-        String[] taskParts = details.split(" /by ", 2);
+        String[] taskParts = details.split(" /BY ", 2);
         if (taskParts.length < 2) {
             throw new JeffException("Please include task description, followed by '/by ' and the timing desired!");
         }
         String description = taskParts[0];
         String deadline = taskParts[1];
-        tasks[taskCount] = new Deadline(description, deadline);
-        System.out.println(tasks[taskCount]);
+        tasks.add(new Deadline(description, deadline));
+        System.out.println(tasks.get(taskCount));
         taskCount++;
     }
 
 
     private void handleEvent(String details) throws JeffException {
-        String[] fromSplit = details.split(" /from ", 2);
+        String[] fromSplit = details.split(" /FROM ", 2);
         if (fromSplit.length < 2) {
             throw new JeffException("Event task must include task description followed by '/from' followed by a start time.");
         }
-        String[] toSplit = fromSplit[1].split(" /to ", 2);
+        String[] toSplit = fromSplit[1].split(" /TO ", 2);
         if (toSplit.length < 2) {
             throw new JeffException("Event task must include '/to' followed by an end time.");
         }
@@ -100,9 +110,13 @@ public class TaskManager{
         String from = toSplit[0];
         String to = toSplit[1];
 
-        tasks[taskCount] = new Event(description, from, to);
-        System.out.println(tasks[taskCount]);
+        tasks.add(new Event(description, from, to));
+        System.out.println(tasks.get(taskCount));
         taskCount++;
+    }
+
+    protected void saveContents() {
+        fileManager.writeToFile(tasks);
     }
 
 }
