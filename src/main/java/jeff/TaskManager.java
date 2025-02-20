@@ -23,10 +23,13 @@ public class TaskManager{
 
         if (taskDetails.startsWith("TODO")) {
             handleToDo(parts[1]);
+            fileManager.writeToFile(tasks);
         } else if (taskDetails.startsWith("DEADLINE")) {
             handleDeadline(parts[1]);
+            fileManager.writeToFile(tasks);
         } else if (taskDetails.startsWith("EVENT")) {
             handleEvent(parts[1]);
+            fileManager.writeToFile(tasks);
         }
         else {
             throw new JeffException("Error when adding item");
@@ -52,6 +55,7 @@ public class TaskManager{
 
         UIHelper.printWithSeparator("Task Deleted!");
         tasks.remove(task_index);
+        fileManager.writeToFile(tasks);
         taskCount--;
     }
 
@@ -82,6 +86,7 @@ public class TaskManager{
                 ? "Nice! I've marked this task as done:"
                 : "Ok, I've marked this task as not done:";
         UIHelper.printWithSeparator(status_message + System.lineSeparator() + currTask);
+        fileManager.writeToFile(tasks);
     }
 
 
@@ -137,10 +142,6 @@ public class TaskManager{
         tasks.add(new Event(description, from, to));
         System.out.println(tasks.get(taskCount));
         taskCount++;
-    }
-
-    protected void saveContents() {
-        fileManager.writeToFile(tasks);
     }
 
 }
