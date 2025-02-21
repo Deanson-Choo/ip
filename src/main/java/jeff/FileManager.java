@@ -5,19 +5,25 @@ import java.util.*;
 public class FileManager {
     private final String filePath = "data/jeff_data.txt";
     private final File file;
+    private final File directory;
 
     public FileManager() {
+        this.directory = new File("data");
         this.file = new File(filePath);
+
         try {
-            if (!file.exists()) {
-                file.createNewFile();
+            // Ensure the directory exists
+            if (!directory.exists()) {
+                System.out.println("Creating data directory: " + directory.mkdir());
             }
-        }
-        catch (IOException e) {
-            UIHelper.printError("Error initializing file: " + e.getMessage());
+            // Ensure the file exists
+            if (!file.exists()) {
+                System.out.println("Creating jeff_data.txt: " + file.createNewFile());
+            }
+        } catch (IOException e) {
+            System.err.println("Error initializing file: " + e.getMessage());
         }
     }
-
 
     /** Load tasks from file */
     public List<Task> loadFileContents() {
