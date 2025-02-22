@@ -79,6 +79,27 @@ public class TaskManager{
         return(status_message + System.lineSeparator() + currTask);
     }
 
+    public List<Task> findItem(String taskDetails) {
+        String query = taskDetails.trim().toLowerCase(); // Normalize input
+        List<Task> result = new ArrayList<>();
+
+        for (Task task : tasks) {
+            String taskName = task.getName().toLowerCase(); // Convert task name to lowercase
+
+            if (query.contains(" ")) { // Multi-word phrase search
+                if (taskName.contains(query)) {
+                    result.add(task);
+                }
+            } else { // Single keyword search (matches full words only)
+                List<String> taskWords = Arrays.asList(taskName.split(" "));
+                if (taskWords.contains(query)) {
+                    result.add(task);
+                }
+            }
+        }
+        return result;
+    }
+
 
 
     private String handleToDo(String description) {
