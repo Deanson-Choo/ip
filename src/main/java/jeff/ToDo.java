@@ -1,7 +1,7 @@
 package jeff;
 
 public class ToDo extends Task{
-    ToDo(String name) {
+    public ToDo(String name) {
         super(name);
     }
     @Override

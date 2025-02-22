@@ -68,7 +68,7 @@ public class FileManager {
                 throw new IOException("Unknown task type: " + line);
             }
         } catch (Exception e) {
-            UIHelper.printError("Skipping corrupt line: " + line);
+            System.err.println("Skipping corrupt line: " + line);
             return null; // Skip corrupted entries
         }
     }
@@ -82,7 +82,7 @@ public class FileManager {
             }
             fw.close();
         } catch (IOException e) {
-            UIHelper.printError("Error writing to file: " + e.getMessage());
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 

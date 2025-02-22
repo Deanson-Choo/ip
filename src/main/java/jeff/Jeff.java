@@ -1,21 +1,33 @@
 package jeff;
 
 public class Jeff {
-    private TaskManager taskManager = new TaskManager();
-    private Reader reader = new Reader(taskManager);
+    private final TaskManager taskManager;
+    private final FileManager fileManager;
+    private final Ui ui;
 
-    public void intro() {
-        UIHelper.printWithSeparator("Yo! I'm Jeff!", "What can I do for you?");
+    public Jeff(String filePath) {
+        ui = new Ui();
+        fileManager = new FileManager();
+        taskManager = new TaskManager(fileManager.loadFileContents());
     }
 
-    public void outro() {
-        UIHelper.printWithSeparator("Bye. Hope I see you again soon!");
+    public void run() {
+        ui.showWelcome();
+        boolean isExit = false;
+        while (!isExit) {
+            try {
+                String userInput = ui.readCommand();
+                Command command = Parser.parse(userInput);
+                command.execute(taskManager, ui, fileManager);
+                isExit = command.isExit();
+            } catch (JeffException e) {
+               ui.showError(e.getMessage());
+            }
+        }
+        ui.showGoodbye();
     }
 
-    public static void main(String[] args){
-        Jeff jeff = new Jeff();
-        jeff.intro();
-        jeff.reader.startScanning();
-        jeff.outro();
+    public static void main(String[] args) {
+        new Jeff("data/jeff_data.txt").run();
     }
 }
