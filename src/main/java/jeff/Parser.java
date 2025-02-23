@@ -1,6 +1,18 @@
 package jeff;
 
+/**
+ * Parses user input and converts it into executable commands.
+ * <p>
+ * This class interprets user input and maps it to the corresponding
+ * {@link Command} objects for execution.
+ */
 public class Parser {
+    /**
+     * Parses a user input string and returns the appropriate {@link Command}.
+     * @param userInput
+     * @return {@link Command}
+     * @throws JeffException
+     */
     public static Command parse(String userInput) throws JeffException {
         String[] parts = userInput.split(" ", 2);
         String commandType = parts[0].toUpperCase();

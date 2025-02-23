@@ -2,11 +2,21 @@ package jeff;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Handles reading and writing task data to a persistent file.
+ * <p>
+ * This class ensures that task data is loaded from and saved to a file (`jeff_data.txt`)
+ * to maintain persistence across sessions.
+ */
 public class FileManager {
     private final String filePath = "data/jeff_data.txt";
     private final File file;
     private final File directory;
 
+    /**
+     * Initializes the FileManager by ensuring the required data directory and file exist.
+     * If the directory or file is missing, it creates them.
+     */
     public FileManager() {
         this.directory = new File("data");
         this.file = new File(filePath);
@@ -25,7 +35,13 @@ public class FileManager {
         }
     }
 
-    /** Load tasks from file */
+    /**
+     * Loads tasks from the file into a list.
+     * <p>
+     * Reads each line from the file and converts it into a {@link Task} object.
+     *
+     * @return A list of {@link Task} objects loaded from the file.
+     */
     public List<Task> loadFileContents() {
         List<Task> tasks = new ArrayList<>();
         try {
@@ -40,7 +56,11 @@ public class FileManager {
         return tasks;
     }
 
-    /** Convert saved text format back to Task objects */
+    /**
+     * Parses a task entry from a formatted text line.
+     * @param line A single line of task data from the file.
+     * @return A {@link Task} object reconstructed from the file data, or {@code null} if the line is corrupt.
+     */
     private Task parseTask(String line) {
         try {
             String[] parts = line.split(" \\| ");
@@ -73,7 +93,12 @@ public class FileManager {
         }
     }
 
-    /** Save all tasks to the file */
+    /**
+     * Saves all tasks to the file.
+     * <p>
+     * Each task is converted into a formatted text representation before being written.
+     * @param tasks The list of tasks to be written to the file.
+     */
     public void writeToFile(List<Task> tasks) {
         try {
             FileWriter fw = new FileWriter(file);
@@ -86,7 +111,19 @@ public class FileManager {
         }
     }
 
-    /** Convert Task object into a formatted string */
+    /**
+     * Converts a {@link Task} object into a formatted text string for storage.
+     * <p>
+     * The format follows:
+     * <pre>
+     *     T | X | Task Name
+     *     D | X | Task Name | BY (TIME)
+     *     E | X | Task Name | FROM (TIME) | TO (TIME)
+     * </pre>
+     *
+     * @param task The task to be formatted.
+     * @return A string representation of the task for storage.
+     */
     private String formatTask(Task task) {
         String type = task instanceof ToDo ? "T" : task instanceof Deadline ? "D" : "E";
 
