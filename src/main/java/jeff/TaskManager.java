@@ -3,6 +3,12 @@ import java.util.*;
 
 import java.util.ArrayList;
 
+/**
+ * Manages a list of tasks, including adding, deleting, updating statuses, and searching.
+ * <p>
+ * This class provides methods to manipulate tasks in memory and supports
+ * different task types such as {@link ToDo}, {@link Deadline}, and {@link Event}.
+ */
 public class TaskManager{
     private List<Task> tasks = new ArrayList<>();
     private int taskCount;
@@ -12,6 +18,12 @@ public class TaskManager{
         taskCount = tasks.size();
     }
 
+    /**
+     * Adds a new task based on the provided details.
+     *
+     * @param taskDetails The full user input describing the task type and details.
+     * @return A message confirming the task addition or an error message.
+     */
     public String addNewItem(String taskDetails) {
         String[] parts = taskDetails.split(" ", 2);
         //part[0] is the task type, //parts[1] is the details
@@ -31,6 +43,12 @@ public class TaskManager{
         }
     }
 
+    /**
+     * Deletes a task from the task list.
+     *
+     * @param taskDetails An array containing the command and task number.
+     * @return A message indicating whether the deletion was successful or if there was an error.
+     */
     public String deleteItem(String[] taskDetails) {
         if (taskDetails.length < 2) { //Error 1: No Task Number
             return("Please input a task number!");
@@ -53,7 +71,12 @@ public class TaskManager{
         }
     }
 
-
+    /**
+     * Updates the status of a task (mark as done or not done).
+     *
+     * @param words An array containing the command (mark/unmark) and task number.
+     * @return A message confirming the update or an error message.
+     */
     public String updateItemStatus(String[] words) {
         String instruction = words[0];
         if (words.length < 2) { //Error 1: No Task Number
@@ -79,8 +102,14 @@ public class TaskManager{
         return(status_message + System.lineSeparator() + currTask);
     }
 
+    /**
+     * Searches for tasks that contain a specific keyword or exact phrase.
+     *
+     * @param taskDetails The keyword or phrase to search for.
+     * @return A list of tasks that match the search criteria.
+     */
     public List<Task> findItem(String taskDetails) {
-        String query = taskDetails.trim().toLowerCase(); // Normalize input
+        String query = taskDetails.trim().toLowerCase();
         List<Task> result = new ArrayList<>();
 
         for (Task task : tasks) {
@@ -100,7 +129,12 @@ public class TaskManager{
         return result;
     }
 
-
+    /**
+     * Creates and adds a new {@link ToDo} task.
+     *
+     * @param description The task description.
+     * @return A message confirming the task addition.
+     */
 
     private String handleToDo(String description) {
         tasks.add(new ToDo(description));
@@ -108,7 +142,12 @@ public class TaskManager{
         return("I've added: " + tasks.get(taskCount - 1));
     }
 
-
+    /**
+     * Creates and adds a new {@link Deadline} task.
+     *
+     * @param details The task description followed by "/by" and the deadline.
+     * @return A message confirming the task addition or an error message.
+     */
     private String handleDeadline (String details) {
         String[] taskParts = details.split(" /BY ", 2);
         if (taskParts.length < 2) {
@@ -121,7 +160,12 @@ public class TaskManager{
         return ("I've added: " + tasks.get(taskCount - 1));
     }
 
-
+    /**
+     * Creates and adds a new {@link Event} task.
+     *
+     * @param details The task description followed by "/from" and "/to" for event timing.
+     * @return A message confirming the task addition or an error message.
+     */
     private String handleEvent(String details) {
         String[] fromSplit = details.split(" /FROM ", 2);
         if (fromSplit.length < 2) {
