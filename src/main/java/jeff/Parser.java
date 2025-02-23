@@ -12,6 +12,7 @@ public class Parser {
             case MARK, UNMARK: return new UpdateStatusCommand(parts);
             case TODO, DEADLINE, EVENT: return new AddCommand(userInput);
             case DELETE: return new DeleteCommand(parts);
+            case FIND: return new FindCommand(userInput);
             default: throw new JeffException("Unknown command: " + commandType);
             }
         } catch (IllegalArgumentException e) {
