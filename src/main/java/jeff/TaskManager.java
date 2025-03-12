@@ -25,21 +25,17 @@ public class TaskManager{
      * @return A message confirming the task addition or an error message.
      */
     public String addNewItem(String taskDetails) {
-        String[] parts = taskDetails.split(" ", 2);
+        String[] parts = taskDetails.toUpperCase().split(" ", 2);
         //part[0] is the task type, //parts[1] is the details
         if (parts.length < 2) {
             return ("You did not enter a task description");
         }
-        Commands command = Commands.valueOf(parts[0].toUpperCase());
+        Commands command = Commands.valueOf(parts[0]);
         switch (command) {
-        case TODO:
-            return handleToDo(parts[1]);
-        case EVENT:
-            return handleEvent(parts[1]);
-        case DEADLINE, UNMARK:
-            return handleDeadline(parts[1]);
-        default:
-            return "Error when adding task!";
+        case TODO: return handleToDo(parts[1]);
+        case EVENT: return handleEvent(parts[1]);
+        case DEADLINE: return handleDeadline(parts[1]);
+        default: return "Error when adding task!";
         }
     }
 
@@ -113,13 +109,13 @@ public class TaskManager{
         List<Task> result = new ArrayList<>();
 
         for (Task task : tasks) {
-            String taskName = task.getName().toLowerCase(); // Convert task name to lowercase
+            String taskName = task.getName().toLowerCase(); // convert task name to lowercase
 
-            if (query.contains(" ")) { // Multi-word phrase search
+            if (query.contains(" ")) { // multi-word phrase search
                 if (taskName.contains(query)) {
                     result.add(task);
                 }
-            } else { // Single keyword search (matches full words only)
+            } else { // single keyword search
                 List<String> taskWords = Arrays.asList(taskName.split(" "));
                 if (taskWords.contains(query)) {
                     result.add(task);

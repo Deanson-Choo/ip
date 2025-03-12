@@ -9,7 +9,6 @@ import java.util.*;
  * to maintain persistence across sessions.
  */
 public class FileManager {
-    private final String filePath = "data/jeff_data.txt";
     private final File file;
     private final File directory;
 
@@ -17,7 +16,7 @@ public class FileManager {
      * Initializes the FileManager by ensuring the required data directory and file exist.
      * If the directory or file is missing, it creates them.
      */
-    public FileManager() {
+    public FileManager(String filePath) {
         this.directory = new File("data");
         this.file = new File(filePath);
 

@@ -17,7 +17,7 @@ public class Parser {
         String[] parts = userInput.split(" ", 2);
         String commandType = parts[0].toUpperCase();
         try {
-            Commands command = Commands.valueOf(commandType); // Use Enum instead of string
+            Commands command = Commands.valueOf(commandType);
             switch (command) {
             case BYE: return new ExitCommand();
             case LIST: return new ListCommand();

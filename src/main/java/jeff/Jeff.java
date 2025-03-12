@@ -7,7 +7,7 @@ public class Jeff {
 
     public Jeff(String filePath) {
         ui = new Ui();
-        fileManager = new FileManager();
+        fileManager = new FileManager(filePath);
         taskManager = new TaskManager(fileManager.loadFileContents());
     }
 
