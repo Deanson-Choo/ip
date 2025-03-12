@@ -55,10 +55,8 @@ Example Usage:
 | Task Command   | Description                        |
 |----------------|------------------------------------|
 | `find KEYWORD` | Finds tasks containing the keyword |
-| `find PHRASE`  | Finds tasks containing the phrase  |
 Example Usage:
 - `find report`
-- `find project meeting`
 - ---
 ### Exiting
 | Task Command | Description   |
