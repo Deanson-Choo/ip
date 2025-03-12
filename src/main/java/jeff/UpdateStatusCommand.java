@@ -1,8 +1,14 @@
 package jeff;
 
+
 public class UpdateStatusCommand extends Command {
 
     private String[] taskDetails;
+    /**
+     * Represents a command that updates the status of a task.
+     * <p>
+     * This command handles marking or unmarking tasks as 'done'.
+     */
     public UpdateStatusCommand(String[] taskDetails) {
         this.taskDetails = taskDetails;
     }

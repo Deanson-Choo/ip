@@ -2,9 +2,15 @@ package jeff;
 
 import java.util.List;
 
+
 public class FindCommand extends Command {
     private final String taskDetails;
-
+    /**
+     * Represents a command that searches for tasks containing a keyword.
+     * <p>
+     * This command extracts a keyword from the user input and searches
+     * for matching tasks in {@link TaskManager}.
+     */
     public FindCommand(String userInput) throws JeffException {
         String[] parts = userInput.split(" ");
         if (parts.length < 2) {

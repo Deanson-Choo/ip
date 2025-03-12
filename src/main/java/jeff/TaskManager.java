@@ -110,16 +110,8 @@ public class TaskManager{
 
         for (Task task : tasks) {
             String taskName = task.getName().toLowerCase(); // convert task name to lowercase
-
-            if (query.contains(" ")) { // multi-word phrase search
-                if (taskName.contains(query)) {
-                    result.add(task);
-                }
-            } else { // single keyword search
-                List<String> taskWords = Arrays.asList(taskName.split(" "));
-                if (taskWords.contains(query)) {
-                    result.add(task);
-                }
+            if (taskName.contains(query)) {
+                result.add(task);
             }
         }
         return result;

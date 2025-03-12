@@ -2,6 +2,12 @@ package jeff;
 
 import java.util.List;
 
+/**
+ * Represents a command that lists all tasks in the task manager.
+ * <p>
+ * This command retrieves all tasks stored in {@link TaskManager}
+ * and displays them in a numbered list.
+ */
 public class ListCommand extends Command {
     @Override
     public void execute(TaskManager taskManager, Ui ui, FileManager fileManager) {

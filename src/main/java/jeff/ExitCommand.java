@@ -1,5 +1,8 @@
 package jeff;
 
+/**
+ * This command is used to terminate the program
+ */
 public class ExitCommand extends Command {
 
     @Override
